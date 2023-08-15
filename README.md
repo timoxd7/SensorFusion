@@ -1,4 +1,6 @@
 # SensorFusion
+This is a Port of the original Library from [Here](https://github.com/aster94/SensorFusion) to support the ESP32.
+
 Using IMUs is one of the most struggling part of every Arduino lovers, here there is a simple solution.
 
 ![Alt text](/extras/axis.png?raw=true "axis")
@@ -11,7 +13,7 @@ I just made small modifications in the way the libraries handled the timing betw
 
 
 ## Installation
-Use the arduino/platformIO library manager or download directly from github
+Embed this as component to your ESP32 Project (using a git submodule or the esp idf's component manager)
 
 
 ## About
