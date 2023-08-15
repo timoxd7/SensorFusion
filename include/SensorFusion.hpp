@@ -18,7 +18,8 @@
 #define SensorFusion_h
 
 #include <math.h>
-#include "Arduino.h"
+#include <memory.h>
+#include "esp_timer.h"
 
 //--------------------------------------------------------------------------------------------
 // Variable declaration
@@ -40,42 +41,42 @@ public:
 	// find initial Quaternios
 	// it is good practice to provide mean values from multiple measurements
     bool initQuat(float ax, float ay, float az, float mx, float my, float mz);
-	//these values are already defined by arduino
-	//const float DEG_TO_RAD = 0.0174532925199433f; //PI/180.0f;	
-	//const float RAD_TO_DEG = 57.29577951308233f; //180.0f/PI
-	
-	float deltatUpdate (){
-		Now = micros();
+
+	const float DEG_TO_RAD = 0.0174532925199433f; //PI/180.0f;
+	const float RAD_TO_DEG = 57.29577951308233f; //180.0f/PI
+
+	inline float deltatUpdate (){
+		Now = esp_timer_get_time();
 		deltat = ((Now - lastUpdate) / 1000000.0f); // set integration time by time elapsed since last filter update
 		lastUpdate = Now;
 		return deltat;
 	}
 
-	float getRoll() {
+	inline float getRoll() {
 		if (!anglesComputed) computeAngles();
 		return roll * RAD_TO_DEG;
 	}
-	float getPitch() {
+	inline float getPitch() {
 		if (!anglesComputed) computeAngles();
 		return pitch * RAD_TO_DEG;
 	}
-	float getYaw() {
+	inline float getYaw() {
 		if (!anglesComputed) computeAngles();
 		return yaw * RAD_TO_DEG + 180.0f;
 	}
-	float getRollRadians() {
+	inline float getRollRadians() {
 		if (!anglesComputed) computeAngles();
 		return roll;
 	}
-	float getPitchRadians() {
+	inline float getPitchRadians() {
 		if (!anglesComputed) computeAngles();
 		return pitch;
 	}
-	float getYawRadians() {
+	inline float getYawRadians() {
 		if (!anglesComputed) computeAngles();
 		return yaw;
 	}
-	float* getQuat() {
+	inline float* getQuat() {
 		memcpy(_copyQuat, &q0, sizeof(float)*4);
 		return _copyQuat;
 	}
